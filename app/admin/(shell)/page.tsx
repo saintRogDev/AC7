@@ -12,6 +12,7 @@ import { formatCurrency, timeAgo } from "@/lib/admin/format"
 
 export default function AdminDashboardPage() {
   const newSubmissions = submissions.filter((s) => s.status === "New").length
+  const newPhotoSubmissions = submissions.filter((s) => s.type === "Photo Submission" && s.status === "New").length
   const donationsThisMonth = donations.filter((d) => d.status === "Completed").length
   const publishedImages = galleryImages.filter((g) => g.published).length
   const activeStaff = staffMembers.filter((s) => s.status === "Active").length
@@ -132,7 +133,8 @@ export default function AdminDashboardPage() {
                 {galleryImages.length} images published
               </p>
               <p className="text-muted-foreground">
-                <span className="font-medium text-foreground">1</span> new photo submission awaiting promotion
+                <span className="font-medium text-foreground">{newPhotoSubmissions}</span>{" "}
+                new photo {newPhotoSubmissions === 1 ? "submission" : "submissions"} awaiting review
               </p>
               <Link href="/admin/gallery" className="mt-1 text-xs text-accent-foreground hover:underline">
                 Manage gallery

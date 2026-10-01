@@ -32,7 +32,7 @@ export default function SubmissionDetailPage() {
     if (!draftNote.trim()) return
     setNotes((prev) => [...prev, { author: "Jordan Williams", date: new Date().toISOString(), note: draftNote.trim() }])
     setDraftNote("")
-    toast.success("Note added")
+    toast.success("Preview note added", { description: "Preview only — not saved to a backend." })
   }
 
   return (
@@ -56,7 +56,7 @@ export default function SubmissionDetailPage() {
                 size="sm"
                 onClick={() => {
                   setStatus("Reviewed")
-                  toast.success("Marked as reviewed")
+                  toast.success("Marked as reviewed in preview", { description: "Preview only — not saved to a backend." })
                 }}
               >
                 <Check className="size-4" />
@@ -69,7 +69,7 @@ export default function SubmissionDetailPage() {
                 size="sm"
                 onClick={() => {
                   setStatus("Archived")
-                  toast.success("Submission archived")
+                  toast.success("Submission archived in preview", { description: "Preview only — not saved to a backend." })
                 }}
               >
                 <Archive className="size-4" />
@@ -81,7 +81,7 @@ export default function SubmissionDetailPage() {
                 size="sm"
                 onClick={() => {
                   setStatus("New")
-                  toast.success("Submission restored")
+                  toast.success("Submission restored in preview", { description: "Preview only — not saved to a backend." })
                 }}
               >
                 <RotateCcw className="size-4" />

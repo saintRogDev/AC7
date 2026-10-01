@@ -12,6 +12,7 @@ export default function AdminLoginPage() {
   const router = useRouter()
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle")
   const [email, setEmail] = useState("jordan@example.com")
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -70,7 +71,11 @@ export default function AdminLoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Input id="password" type="password" autoComplete="current-password" required placeholder="••••••••" />
+              <Input id="password" type={showPassword ? "text" : "password"} autoComplete="off" required placeholder="Demo password only" aria-describedby="login-preview-note" />
+              <Button type="button" variant="ghost" size="sm" className="self-end" aria-controls="password" aria-pressed={showPassword} onClick={() => setShowPassword((shown) => !shown)}>
+                {showPassword ? "Hide password" : "Show password"}
+              </Button>
+              <p id="login-preview-note" className="text-sm text-muted-foreground">Preview only. Do not enter real credentials; no authentication takes place.</p>
             </div>
 
             <Button type="submit" className="mt-2 w-full" disabled={status === "loading"}>

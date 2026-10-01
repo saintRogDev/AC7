@@ -49,9 +49,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           >
             <Menu className="size-5" />
           </Button>
-          <div className="flex flex-1 items-center justify-between">
-            <span className="text-sm font-medium text-foreground md:text-base">{currentLabel ?? "Admin"}</span>
-            <span className="hidden text-xs text-muted-foreground sm:inline">Local demo data · not connected</span>
+          <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+            <span className="truncate text-sm font-medium text-foreground md:text-base">{currentLabel ?? "Admin"}</span>
+            <span className="shrink-0 rounded-full border border-border px-2 py-1 text-sm text-muted-foreground" title="Sample data only. Not connected to live services." aria-label="Preview: sample data, not connected to live services">
+              <span className="hidden sm:inline">Sample data · not connected</span>
+              <span className="sm:hidden">Preview</span>
+            </span>
           </div>
         </header>
 

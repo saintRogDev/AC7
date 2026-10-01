@@ -44,13 +44,13 @@ export default function GalleryPage() {
   function handleSave(values: { caption: string; alt: string; order: number; published: boolean; src: string }) {
     if (editingImage) {
       setImages((prev) => prev.map((img) => (img.id === editingImage.id ? { ...img, ...values } : img)))
-      toast.success("Photo updated")
+      toast.success("Preview photo updated", { description: "Preview only — the public gallery is not updated. Changes are not persisted." })
     } else {
       setImages((prev) => [
         ...prev,
         { id: `img_${Date.now()}`, addedAt: new Date().toISOString(), ...values },
       ])
-      toast.success("Photo added to gallery")
+      toast.success("Photo added to preview", { description: "Preview only — no upload or public gallery change. Changes are not persisted." })
     }
     setDialogOpen(false)
   }
@@ -59,7 +59,7 @@ export default function GalleryPage() {
     if (!deletingId) return
     setImages((prev) => prev.filter((img) => img.id !== deletingId))
     setDeletingId(null)
-    toast.success("Photo removed")
+    toast.success("Photo removed from preview", { description: "Preview only — the public gallery is not updated. Changes are not persisted." })
   }
 
   return (

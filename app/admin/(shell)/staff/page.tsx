@@ -47,21 +47,21 @@ export default function StaffPage() {
         invitedAt: new Date().toISOString(),
       },
     ])
-    toast.success(`Invitation sent to ${values.email}`)
+    toast.success("Invitation drafted (no email sent)", { description: `Preview entry for ${values.email} only; no account created.` })
   }
 
   function changeRole(id: string, role: StaffRole) {
     setStaff((prev) => prev.map((s) => (s.id === id ? { ...s, role } : s)))
-    toast.success("Role updated")
+    toast.success("Preview role updated", { description: "Preview only — no accounts changed. Changes are not persisted." })
   }
 
   function revokeAccess(id: string) {
     setStaff((prev) => prev.map((s) => (s.id === id ? { ...s, status: "Revoked" } : s)))
-    toast.success("Access revoked")
+    toast.success("Preview access revoked", { description: "Preview only — no accounts changed. Changes are not persisted." })
   }
 
   function resendInvite(email: string) {
-    toast.success(`Invitation resent to ${email}`)
+    toast.info("Resend simulated (no email sent)", { description: `Preview only for ${email}; no delivery attempted.` })
   }
 
   return (
@@ -160,7 +160,7 @@ export default function StaffPage() {
                           <DropdownMenuItem
                             onClick={() => {
                               setStaff((prev) => prev.map((s) => (s.id === member.id ? { ...s, status: "Active" } : s)))
-                              toast.success("Access restored")
+                              toast.success("Preview access restored", { description: "Preview only — no accounts changed. Changes are not persisted." })
                             }}
                           >
                             <RotateCcw className="size-4" />

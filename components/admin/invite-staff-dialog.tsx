@@ -43,7 +43,7 @@ export function InviteStaffDialog({ open, onOpenChange, onInvite }: InviteStaffD
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Invite Staff Member</DialogTitle>
-          <DialogDescription>They&apos;ll receive an invitation to set up their account and sign in.</DialogDescription>
+          <DialogDescription>Preview only: this adds a sample staff entry locally. No invitation email is sent and no account is created.</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
