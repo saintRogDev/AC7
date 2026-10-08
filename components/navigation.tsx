@@ -15,7 +15,8 @@ const navLinks = [
   { href: "/foundation", label: "Foundation" },
 ]
 
-export function Navigation() {
+export function Navigation({ eventsEnabled = false }: { eventsEnabled?: boolean }) {
+  const links = eventsEnabled ? [...navLinks, { href: "/events", label: "Events" }] : navLinks
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -36,7 +37,7 @@ export function Navigation() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center justify-center gap-8" aria-label="Main navigation">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -69,7 +70,7 @@ export function Navigation() {
       {mobileMenuOpen && (
         <nav className="md:hidden bg-background border-t border-border" aria-label="Mobile navigation">
           <div className="flex flex-col items-center py-4 gap-4">
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

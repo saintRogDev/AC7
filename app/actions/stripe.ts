@@ -1,5 +1,7 @@
 "use server"
 
+import type Stripe from "stripe"
+
 import { stripe } from "@/lib/stripe"
 import { ALL_DONATIONS } from "@/lib/donations"
 
@@ -29,6 +31,7 @@ export async function startCheckoutSession(donationId: string) {
     mode: donation.mode,
   })
 
+  if (!session.client_secret) throw new Error("Checkout is temporarily unavailable.")
   return session.client_secret
 }
 
@@ -62,5 +65,6 @@ export async function startCustomCheckoutSession(amountInCents: number, mode: "p
     mode,
   })
 
+  if (!session.client_secret) throw new Error("Checkout is temporarily unavailable.")
   return session.client_secret
 }

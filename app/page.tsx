@@ -1,3 +1,4 @@
+import { estlEventsPublicEnabled } from "@/lib/estl-events-flags"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { HeroSection } from "@/components/home/hero-section"
@@ -8,7 +9,7 @@ import { CTASection } from "@/components/home/cta-section"
 export default function HomePage() {
   return (
     <>
-      <Navigation />
+      <Navigation eventsEnabled={estlEventsPublicEnabled()} />
       <main>
         <HeroSection />
         <MissionSection />
