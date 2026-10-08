@@ -15,6 +15,7 @@ export default defineConfig({
     },
   },
   test: {
+    server: { deps: { inline: ["@east-saint/staff-invitations-client"] } },
     // Node by default: most suites assert on server rendering to a string, and
     // server modules need a real Node environment. Interaction tests opt into
     // jsdom per file with a `@vitest-environment jsdom` pragma.
