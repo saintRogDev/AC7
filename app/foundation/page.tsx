@@ -1,3 +1,4 @@
+import { estlEventsPublicEnabled } from "@/lib/estl-events-flags"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Metadata } from "next"
@@ -56,7 +57,7 @@ const values = [
 export default function FoundationPage() {
   return (
     <>
-      <Navigation />
+      <Navigation eventsEnabled={estlEventsPublicEnabled()} />
       <main>
         {/* Hero Section */}
         <section className="py-20 md:py-28">
