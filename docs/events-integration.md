@@ -17,6 +17,14 @@ Production is pinned to `ac7`; Preview/development to `ac7-sandbox`. Every trans
 
 ## Acceptance and release
 
+Sandbox configuration checkpoint: `ac7` and `ac7-sandbox` organizations exist,
+and the approved existing operator has sandbox admin membership. The Preview
+branch now has public Supabase configuration, the ESTL origin, a separately
+scoped server-only site credential, and the public Events flag. Credential
+registration was verified by safe-prefix readback; its temporary operator route
+was disabled and verified closed afterwards. No production credential or Events
+activation is included. Rebuild and authenticated live acceptance remain required.
+
 Local tests cover tenant mismatch, failed auth, privileged actions, malformed responses, public flag, visitor IP, rate limits, ticket check-in, camera fallback, retry idempotency, and positive integer capacity. Build enforces TypeScript rather than ignoring errors. Lint keeps four existing generated UI warnings scoped to existing files.
 
 Before activation: provision AC7 production/sandbox organizations and scoped credentials, configure environment, verify authenticated site context, approve staff membership, run sandbox registration → mailbox code → ticket → admission plus duplicate/foreign-ticket rejection, then review exact commit and production configuration. Public listing alone is not complete proof. Rollback disables `ESTL_EVENTS_PUBLIC_ENABLED` and restores the previous deployment.
