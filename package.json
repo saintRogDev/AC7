@@ -71,7 +71,8 @@
     "@supabase/ssr": "0.12.4",
     "@supabase/supabase-js": "2.112.2",
     "jsqr": "1.4.0",
-    "qrcode": "1.5.4"
+    "qrcode": "1.5.4",
+    "@east-saint/events-client": "file:vendor/east-saint-events-client-0.3.0.tgz"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",

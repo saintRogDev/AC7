@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { ArrowLeft, CalendarDays, CheckCircle2, Loader2, MailCheck, MapPin } from "lucide-react"
 
 import type { EventsPublicAdapter } from "@/lib/events-core/adapter"
@@ -27,6 +27,7 @@ export function EventDetail({
   reloadKey,
   backHref,
   demo = false,
+  renderRegistration,
 }: {
   adapter: EventsPublicAdapter
   eventId: string
@@ -34,6 +35,7 @@ export function EventDetail({
   backHref: string
   /** Demo affordances. Never enable on a live page. */
   demo?: boolean
+  renderRegistration?: (event: EventCore, freeRegistration: ReactNode) => ReactNode
 }) {
   const [state, setState] = useState<LoadState>({ phase: "loading" })
 
@@ -64,13 +66,26 @@ export function EventDetail({
 
       {state.phase === "loading" ? <SectionSpinner label="Loading this event…" /> : null}
       {state.phase === "error" ? <InlineError error={state.error} onRetry={load} /> : null}
-      {state.phase === "ready" ? <EventDetailBody adapter={adapter} event={state.event} demo={demo} /> : null}
+      {state.phase === "ready" ? <EventDetailBody adapter={adapter} event={state.event} demo={demo} renderRegistration={renderRegistration} /> : null}
     </div>
   )
 }
 
-function EventDetailBody({ adapter, event, demo }: { adapter: EventsPublicAdapter; event: EventCore; demo: boolean }) {
+function EventDetailBody({ adapter, event, demo, renderRegistration }: { adapter: EventsPublicAdapter; event: EventCore; demo: boolean; renderRegistration?: (event: EventCore, freeRegistration: ReactNode) => ReactNode }) {
   const closed = event.status !== "published" || hasEnded(event.ends_at)
+  const registration = closed ? (
+        <div className="rounded-3xl border border-border bg-card p-6 text-center">
+          <p className="font-serif text-2xl text-foreground">Registration is closed</p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            {event.status === "cancelled"
+              ? "This event has been cancelled."
+              : "This event is no longer open for new registrations."}
+          </p>
+        </div>
+      ) : (
+        <RsvpFlow adapter={adapter} event={event} demo={demo} />
+      )
+
 
   return (
     <article className="grid gap-8">
@@ -101,18 +116,7 @@ function EventDetailBody({ adapter, event, demo }: { adapter: EventsPublicAdapte
         </div>
       </div>
 
-      {closed ? (
-        <div className="rounded-3xl border border-border bg-card p-6 text-center">
-          <p className="font-serif text-2xl text-foreground">Registration is closed</p>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {event.status === "cancelled"
-              ? "This event has been cancelled."
-              : "This event is no longer open for new registrations."}
-          </p>
-        </div>
-      ) : (
-        <RsvpFlow adapter={adapter} event={event} demo={demo} />
-      )}
+      {renderRegistration ? renderRegistration(event, registration) : registration}
     </article>
   )
 }

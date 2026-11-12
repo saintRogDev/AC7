@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@east-saint/events-client':
+        specifier: file:vendor/east-saint-events-client-0.3.0.tgz
+        version: file:vendor/east-saint-events-client-0.3.0.tgz
       '@base-ui/react':
         specifier: ^1.5.0
         version: 1.8.0(@date-fns/tz@1.4.1)(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -239,6 +242,10 @@ importers:
         version: 4.1.11(@types/node@24.10.4)(jsdom@27.0.1(supports-color@7.2.0))(vite@8.3.3(@types/node@24.10.4)(jiti@2.6.1))
 
 packages:
+
+  '@east-saint/events-client@file:vendor/east-saint-events-client-0.3.0.tgz':
+    resolution: {integrity: sha512-Rzo6+sPVz3pgeRG21eE2UhSC63ik/JdYcdc8jd+aqmERK/lKiRh9BagqAVd1ZSKZ8l3qg+xfPtru6Pwu9AS2SA==, tarball: file:vendor/east-saint-events-client-0.3.0.tgz}
+    version: 0.3.0
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -4965,6 +4972,10 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
+
+  '@east-saint/events-client@file:vendor/east-saint-events-client-0.3.0.tgz':
+    dependencies:
+      zod: 3.25.76
 
   '@alloc/quick-lru@5.2.0': {}
 

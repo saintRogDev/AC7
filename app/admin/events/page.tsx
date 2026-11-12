@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { estlPaidEventsUiEnabled } from "@/lib/estl-events-flags"
 
 import { EventsWorkspace } from "./events-workspace"
 import { capabilitiesForRole, type StaffRole } from "@/lib/events-core/branding"
@@ -23,6 +24,7 @@ export default async function AdminEventsPage() {
     <EventsWorkspace
       capabilities={capabilitiesForRole(staff.role as StaffRole)}
       environmentLabel={staff.orgSlug}
+      paidEnabled={estlPaidEventsUiEnabled()}
     />
   )
 }
