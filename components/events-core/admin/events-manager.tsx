@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, type ReactNode } from "react"
 import { CalendarClock, ChevronRight, Loader2, Lock, Pencil, Plus, QrCode as QrIcon, Users } from "lucide-react"
 
 import type { EventsAdminAdapter } from "@/lib/events-core/adapter"
@@ -21,16 +21,18 @@ type View =
   | { mode: "list" }
   | { mode: "create" }
   | { mode: "edit"; event: EventCore }
-  | { mode: "detail"; event: EventCore; tab: "attendees" | "checkin" }
+  | { mode: "detail"; event: EventCore; tab: "attendees" | "checkin" | "tickets" }
 
 export function EventsManager({
   adapter,
   capabilities,
   reloadKey,
+  renderTickets,
 }: {
   adapter: EventsAdminAdapter
   capabilities: StaffCapabilities
   reloadKey: unknown
+  renderTickets?: (event: EventCore) => ReactNode
 }) {
   const [state, setState] = useState<ListState>({ phase: "loading" })
   const [view, setView] = useState<View>({ mode: "list" })
@@ -117,7 +119,8 @@ export function EventsManager({
           </button>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {renderTickets ? <TabButton active={tab === "tickets"} onClick={() => setView({ mode: "detail", event, tab: "tickets" })} icon={<CalendarClock className="size-4" />}>Tickets and sales</TabButton> : null}
           <TabButton active={tab === "attendees"} onClick={() => setView({ mode: "detail", event, tab: "attendees" })} icon={<Users className="size-4" />}>
             Attendees
           </TabButton>
@@ -128,7 +131,7 @@ export function EventsManager({
           ) : null}
         </div>
 
-        {tab === "attendees" ? (
+        {tab === "tickets" ? renderTickets?.(event) : tab === "attendees" ? (
           <AttendeesPanel adapter={adapter} eventId={event.id} reloadKey={reloadKey} />
         ) : (
           <CheckInPanel adapter={adapter} eventId={event.id} />

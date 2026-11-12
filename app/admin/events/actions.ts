@@ -1,5 +1,7 @@
 "use server"
 
+import { configureTicketOffering, readTicketManagement } from "@/lib/estl-paid-events"
+
 import {
   checkIn as checkInCall,
   createEvent as createEventCall,
@@ -68,4 +70,17 @@ export async function checkInAction(input: {
 }): Promise<EstlResult<CheckInResult>> {
   const staff = await requireEventsStaff()
   return callAsEventsStaff(staff, (token) => checkInCall(token, input))
+}
+
+export async function configureTicketOfferingAction(input: unknown):Promise<EstlResult<unknown>> {
+  const staff=await requireEventsStaff()
+  return callAsEventsStaff(staff,token=>configureTicketOffering(token,input))
+}
+export async function ticketOfferingAction(eventId:string):Promise<EstlResult<unknown>> {
+  const staff=await requireEventsStaff()
+  return callAsEventsStaff(staff,token=>readTicketManagement(token,eventId,'offering'))
+}
+export async function ticketSalesAction(eventId:string,cursor:string|null=null):Promise<EstlResult<unknown>> {
+  const staff=await requireEventsStaff()
+  return callAsEventsStaff(staff,token=>readTicketManagement(token,eventId,'sales',cursor))
 }

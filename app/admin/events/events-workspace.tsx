@@ -1,6 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { TicketSalesPanel } from "@/components/events-core/admin/ticket-sales-panel"
+import { configureTicketOfferingAction, ticketOfferingAction, ticketSalesAction } from "./actions"
+
+const ticketActions = { offering: ticketOfferingAction, sales: ticketSalesAction, configure: configureTicketOfferingAction }
 
 import { EventsManager } from "@/components/events-core/admin/events-manager"
 import { serverAdminAdapter } from "@/lib/events-core/server-adapter"
@@ -9,9 +13,11 @@ import type { StaffCapabilities } from "@/lib/events-core/branding"
 export function EventsWorkspace({
   capabilities,
   environmentLabel,
+  paidEnabled = false,
 }: {
   capabilities: StaffCapabilities
   environmentLabel: string
+  paidEnabled?: boolean
 }) {
   // Bumping this re-runs the manager's loaders after a mutation succeeds.
   const [reloadKey] = useState(() => `live:${environmentLabel}`)
@@ -27,12 +33,12 @@ export function EventsWorkspace({
           </span>
         </div>
         <p className="max-w-2xl text-pretty text-base leading-7 text-muted-foreground">
-          Events, attendees and check-in for this organization. Guests registered here receive no
+          Events, attendees and check-in for this organization. Free guests registered by staff receive no
           email — hand them their ticket, or check them in manually.
         </p>
       </header>
 
-      <EventsManager adapter={serverAdminAdapter} capabilities={capabilities} reloadKey={reloadKey} />
+      <EventsManager adapter={serverAdminAdapter} capabilities={capabilities} reloadKey={reloadKey} renderTickets={paidEnabled ? event => <TicketSalesPanel key={event.id} event={event} actions={ticketActions} /> : undefined} />
     </div>
   )
 }

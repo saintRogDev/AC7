@@ -1,5 +1,7 @@
 "use server"
 
+import { paidPublicRequest } from "@/lib/estl-paid-events"
+
 import {
   confirmRegistration,
   getPublishedEvent,
@@ -64,4 +66,11 @@ export async function confirmRegistrationAction(input: {
 }): Promise<EstlResult<ConfirmResult>> {
   if (!estlEventsPublicEnabled()) return DISABLED
   return confirmRegistration(input)
+}
+
+/** Existing buyers retain recovery/status/ticket access when new Events discovery is disabled. */
+export async function paidEventAction(operation: string, input: unknown): Promise<EstlResult<unknown>> {
+  if (!['getPurchase','requestRecovery','recoverPurchase','getTicket','cancelPurchase'].includes(operation) && !estlEventsPublicEnabled()) return DISABLED
+  const sourceIp=['requestVerification','requestRecovery'].includes(operation)?await currentVisitorSourceIp():undefined
+  return paidPublicRequest(operation,input,sourceIp??undefined)
 }
