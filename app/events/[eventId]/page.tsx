@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 
 import { PublicEventDetail } from "./event-detail-client"
-import { estlEventsPublicEnabled } from "@/lib/estl-events-flags"
+import { estlEventsPublicEnabled, estlPaidEventsUiEnabled } from "@/lib/estl-events-flags"
 
 export const metadata = {
   title: "Gathering | AC7 Foundation",
@@ -24,7 +24,7 @@ export default async function EstlEventDetailPage({
     <div className="min-h-screen bg-background">
 
       <section className="mx-auto w-full max-w-4xl px-6 pt-32 pb-24 lg:px-8">
-        <PublicEventDetail eventId={eventId} />
+        <PublicEventDetail eventId={eventId} paidEnabled={estlPaidEventsUiEnabled()} />
       </section>
 
     </div>
