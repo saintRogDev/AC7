@@ -105,3 +105,14 @@ test("tab credentials expire and reject malformed tokens without trusting cached
   sessionStorage.setItem(storageKey, JSON.stringify({ purchaseId, token: proof, savedAt: Date.now(), purchase: confirmed }))
   assert.deepEqual(recallPurchase(eventId, purchaseId), { purchaseId, token: proof })
 })
+
+ test("disabled paid sales never fall back to free RSVP, while free events still register", async () => {
+  const { PaidRegistration } = await import("../components/events-core/public/paid-tickets")
+  const event = { id: eventId, status: "published", ends_at: "2099-01-01T00:00:00Z" } as EventCore
+  await act(async () => root.render(<PaidRegistration event={event} adapter={defaults} salesEnabled={false} freeRegistration={<p>Original RSVP</p>} eventHref="/events" />))
+  assert.ok(!container.textContent!.includes("Original RSVP"))
+  assert.equal(container.querySelector('input[name="email"]'), null)
+  assert.match(container.textContent!, /Recover your tickets/)
+  await act(async () => root.render(<PaidRegistration key="disabled-free" event={event} adapter={{ ...defaults, getOffering: async () => ({ data: { event_id: eventId, registration_mode: "free" } as EventOffering }) }} salesEnabled={false} freeRegistration={<p>Original RSVP</p>} eventHref="/events" />))
+  assert.match(container.textContent!, /Original RSVP/)
+})

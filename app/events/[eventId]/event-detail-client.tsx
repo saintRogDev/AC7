@@ -11,7 +11,7 @@ export function PublicEventDetail({ eventId, paidEnabled = false }: { eventId: s
       adapter={serverPublicAdapter}
       eventId={eventId}
       reloadKey="live"
-      renderRegistration={paidEnabled ? (event, freeRegistration) => <PaidRegistration key={event.id} event={event} adapter={serverPaidAdapter} freeRegistration={freeRegistration} eventHref={`/events/${event.id}`} /> : undefined}
+      renderRegistration={(event, freeRegistration) => <PaidRegistration key={event.id} event={event} adapter={serverPaidAdapter} freeRegistration={freeRegistration} salesEnabled={paidEnabled} eventHref={`/events/${event.id}`} />}
       backHref="/events"
     />
   )

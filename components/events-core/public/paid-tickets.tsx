@@ -30,7 +30,7 @@ function unwrap<T>(result: EstlResult<T>): T {
 const textField = (fields: FormData, name: string) => String(fields.get(name) ?? "").trim()
 
 /** Only an authoritative free offering can select the original RSVP flow. */
-export function PaidRegistration({ event, adapter, freeRegistration, eventHref }: { event: EventCore; adapter: PaidEventsPublicAdapter; freeRegistration: ReactNode; eventHref: string }) {
+export function PaidRegistration({ event, adapter, freeRegistration, eventHref, salesEnabled = true }: { salesEnabled?: boolean; event: EventCore; adapter: PaidEventsPublicAdapter; freeRegistration: ReactNode; eventHref: string }) {
   const [offering, setOffering] = useState<EventOffering | null>(null)
   const [error, setError] = useState("")
   const [reload, setReload] = useState(0)
@@ -49,7 +49,7 @@ export function PaidRegistration({ event, adapter, freeRegistration, eventHref }
   if (!offering && !error) return <p role="status">Loading registration options…</p>
   return <>
     {error ? <div role="alert" className="rounded-xl border border-border p-4"><p>{error}</p><button type="button" className={button} onClick={() => setReload(value => value + 1)}>Retry ticket information</button></div> : null}
-    <PaidTickets eventId={event.id} adapter={adapter} offering={offering?.registration_mode === "paid" ? offering : null} salesAvailable={event.status === "published" && Date.parse(event.ends_at) > now} eventHref={eventHref} />
+    <PaidTickets eventId={event.id} adapter={adapter} offering={offering?.registration_mode === "paid" ? offering : null} salesAvailable={salesEnabled && event.status === "published" && Date.parse(event.ends_at) > now} eventHref={eventHref} />
   </>
 }
 

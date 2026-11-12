@@ -8,7 +8,7 @@ import {
   listPublishedEvents,
   requestRegistration,
 } from "@/lib/estl-events-adapter"
-import { estlEventsPublicEnabled } from "@/lib/estl-events-flags"
+import { estlEventsPublicEnabled, estlPaidEventsUiEnabled } from "@/lib/estl-events-flags"
 import { currentVisitorSourceIp } from "@/lib/estl-visitor-source"
 import type {
   ConfirmResult,
@@ -70,7 +70,11 @@ export async function confirmRegistrationAction(input: {
 
 /** Existing buyers retain recovery/status/ticket access when new Events discovery is disabled. */
 export async function paidEventAction(operation: string, input: unknown): Promise<EstlResult<unknown>> {
-  if (!['getPurchase','requestRecovery','recoverPurchase','getTicket','cancelPurchase'].includes(operation) && !estlEventsPublicEnabled()) return DISABLED
+  // Existing purchase operations remain reachable when new sales are hidden.
+  if (['requestVerification','createPurchase'].includes(operation) && (!estlEventsPublicEnabled() || !estlPaidEventsUiEnabled())) return DISABLED
+  // Offering classification remains readable for published events: flag-off
+  // paid events must never render the free RSVP form.
+  if (operation === 'getOffering' && !estlEventsPublicEnabled()) return DISABLED
   const sourceIp=['requestVerification','requestRecovery'].includes(operation)?await currentVisitorSourceIp():undefined
   return paidPublicRequest(operation,input,sourceIp??undefined)
 }
